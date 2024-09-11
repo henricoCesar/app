@@ -1,4 +1,4 @@
-const {select, input} = require('@inquirer/prompts')
+const {select, input, checkbox} = require('@inquirer/prompts')
 
 let meta = {
     value: "Tomar 3l de agua por dia.",
@@ -20,7 +20,33 @@ if(meta.length == 0) {
 )
 }
 
+const listarMetas = async () => {
+   const respostas = await checkbox ({
+    message: "Use a sesta para mudas de metas, espaço para marcar desmarca e o enter pata finalizar",
+    choices: [...metas],
+    instructions:false,
+   })
+    
+   if(respostas.length == 0){
+    console.log("nenhuma meta selesionada!")
+    return
+   }
 
+    metas.forEach((m) => {
+        m.checked = false
+    })
+
+   respostas.forEach((resposta) => {
+    const meta = metas.find((m) => {
+    return m.value == resposta
+     })
+
+     meta.checked = true
+   })
+
+   console.log("Meta(s) marcadas como conclúida(s)")
+
+}
 
 const start = async() => {
 
@@ -49,8 +75,8 @@ const start = async() => {
                 await cadastrarMetas()
                 console.log(metas)
                 break
-            case "vamos listar":  
-                console.log("vamos listar")
+            case "listar":  
+                await listarMetas()
                 break
             case "sair":
                 console.log("ate a proxima!")
