@@ -1,5 +1,7 @@
 const {select, input, checkbox} = require('@inquirer/prompts')
 
+let mensagem = "Bem-vindi app de Metas";
+
 let meta = {
     value: "Tomar 3l de agua por dia.",
     checked: false,
@@ -12,12 +14,15 @@ const cadastrarMetas = async () => {
 
 
 if(meta.length == 0) {
-   console.log("a meta não pode ser vazia.")
+   mensagem ="a meta não pode ser vazia."
    return
 }
    metas.push(
     {value: meta, checked: false}
-)
+   )
+    
+   mensagem = ("Meta cadastrada com sucesso!!")
+    
 }
 
 const listarMetas = async () => {
@@ -32,7 +37,7 @@ const listarMetas = async () => {
 })
 
    if(respostas.length == 0){
-    console.log("nenhuma meta selesionada!")
+    mensagem = "nenhuma meta selesionada!"
     return
    }
 
@@ -44,7 +49,7 @@ const listarMetas = async () => {
      meta.checked = true
    })
 
-   console.log("Meta(s) marcadas como conclúida(s)")
+   mensagem = "Meta(s) marcadas como conclúida(s)"
 
 }
 
@@ -54,7 +59,7 @@ const metasRealizadas = async () => {
     })
 
     if (realizadas.length == 0 ) {
-        console.log("Não existe mesta realizadas :(")
+        mensagem = "Não existe metas realizadas :("
         return
     }
     
@@ -71,7 +76,7 @@ const metasAbertas = async () => {
     })
 
     if (abertas.length == 0 ){
-        console.log("não exitem metas em abertas :)")
+        mensagem = "não exitem metas em abertas :)"
         return
     }
 
@@ -102,9 +107,20 @@ const deletarMetas = async () => {
         return meta.value != item 
         })
 
-        console.log("Meta(s) deletas com sucesso")
+        mensagem = "Meta(s) deletas com sucesso"
 
      })
+
+}
+
+const motrasMensagem = () => {
+    console.clear();
+  
+    if (mensagem != "" ){
+        console.log(mensagem)
+        console.log("")
+        mensagem = ""
+    }
 
 }
 
@@ -112,6 +128,8 @@ const start = async() => {
 
     while(true){
         
+        motrasMensagem()
+
         const opecao = await select ({
             message: "Menu >",
             choices: [
@@ -145,7 +163,6 @@ const start = async() => {
         switch(opecao) {
             case "cadastrar":
                 await cadastrarMetas()
-                console.log(metas)
                 break
             case "listar":  
                 await listarMetas()
